@@ -1,4 +1,6 @@
 node_modules/
+frontend/vite.config.js
+frontend/vite.config.d.ts
 dist/
 target/
 .idea/

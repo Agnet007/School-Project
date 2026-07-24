@@ -6,6 +6,7 @@
     "build": "npm run build --workspace frontend",
     "lint": "npm run lint --workspace frontend",
     "test": "npm run test --workspace frontend",
-    "typecheck": "npm run typecheck --workspace frontend"
+    "typecheck": "npm run typecheck --workspace frontend",
+    "verify:pages": "node scripts/verify-pages-artifact.mjs"
   }
 }

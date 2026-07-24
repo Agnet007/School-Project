@@ -2,19 +2,22 @@ name: Deploy frontend to Pages
 on:
   push:
     branches: [main]
+    paths:
+      - frontend/**
+      - scripts/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/pages.yml
   workflow_dispatch:
 permissions:
   contents: read
   pages: write
   id-token: write
 concurrency:
-  group: pages
+  group: github-pages
   cancel-in-progress: true
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,13 +26,25 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
       - run: npm run build
         env:
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
-          VITE_API_BASE_URL: ${{ vars.PUBLIC_API_BASE_URL }}
+          VITE_DEPLOY_BASE: /School-Project/
+          VITE_RUNTIME_MODE: ${{ vars.VITE_API_BASE_URL != '' && 'REMOTE_API' || 'GITHUB_PAGES_DEMO' }}
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+      - run: npm run verify:pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4

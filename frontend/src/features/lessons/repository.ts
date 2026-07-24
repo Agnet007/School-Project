@@ -1,4 +1,5 @@
 import type { BlockType, LessonBlock, LessonDraft, LessonProblem, LessonVersion } from './model'
+import { runtimeConfig } from '../../runtimeConfig'
 
 export interface LessonRepository {
   create(title: string, description: string): Promise<LessonDraft>
@@ -20,7 +21,7 @@ export class LessonRepositoryError extends Error {
 }
 
 export class HttpLessonRepository implements LessonRepository {
-  constructor(private readonly baseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api/v1') {}
+  constructor(private readonly baseUrl = `${runtimeConfig.apiBaseUrl}/v1`) {}
   create = (title: string, description: string) => this.request<LessonDraft>('/lessons', { method: 'POST', body: JSON.stringify({ title, description }) })
   list = () => this.request<LessonDraft[]>('/lessons')
   getDraft = (id: string) => this.request<LessonDraft>(`/lessons/${id}/draft`)

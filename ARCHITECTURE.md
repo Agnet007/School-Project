@@ -16,7 +16,7 @@ The browser is the normal interaction surface and local authority for supported 
 
 ## Containers and layers
 
-The frontend is a static GitHub Pages artifact. Presentation calls feature application services, which depend on local repository interfaces. IndexedDB adapters persist domain data; the sync engine calls remote REST adapters. Components do not write REST data directly.
+The frontend is a static GitHub Pages artifact. Vite centralizes the `/School-Project/` production base and `/` development base. Typed runtime modes select local development, a read-only GitHub Pages demo, or a future remote API. Presentation calls feature application services, which depend on local repository interfaces. IndexedDB adapters persist domain data; the sync engine calls remote REST adapters. Components do not write REST data directly.
 
 The backend is a modular monolith packaged as one Spring Boot application. Feature packages are `identity`, `authorization`, `organization`, `classroom`, `lesson`, `assessment`, `workspace`, `synchronization`, `asset`, `simulationcatalog`, and `events`; `sharedkernel` contains only stable cross-cutting primitives. Features communicate through application contracts or domain events, never another feature's repository.
 

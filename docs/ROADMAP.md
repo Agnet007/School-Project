@@ -8,6 +8,7 @@
 - [x] Architecture, security, authorization, synchronization, and extension decisions are documented.
 - [x] GitHub Actions validate frontend, backend, and shared contracts.
 - [x] GitHub Pages deployment workflow builds with a repository-relative base path.
+- [x] GitHub Pages deployment uses the official artifact workflow, `/School-Project/` base, and backend-free demo mode.
 
 Acceptance: clean installs can run all documented checks; CI encodes the same checks; persisted contract examples carry independent schema versions.
 
