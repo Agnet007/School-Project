@@ -1,0 +1,3 @@
+# Domain events
+
+Core behavior emits immutable, versioned events through an in-process publisher and future outbox port; analytics absence cannot fail a use case. Initial vocabulary includes lesson installation/opening/completion, block opening/completion, assessment attempts/submissions, note creation, and workspace snapshots. Events minimize personal data. Retention and analytics consumers are deferred pending privacy review.

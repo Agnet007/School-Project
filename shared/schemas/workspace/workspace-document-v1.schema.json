@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://school.example/schemas/workspace/workspace-document-v1.schema.json",
+  "title": "Workspace document v1",
+  "type": "object",
+  "required": ["documentType", "schemaVersion", "entityId", "revision", "workspaceId", "workspaceDocumentType", "syncPolicy", "content"],
+  "properties": {
+    "documentType": { "const": "workspace-document" },
+    "schemaVersion": { "const": 1 },
+    "entityId": { "type": "string", "format": "uuid" },
+    "revision": { "type": "integer", "minimum": 0 },
+    "workspaceId": { "type": "string", "format": "uuid" },
+    "workspaceDocumentType": { "enum": ["NOTE", "DRAWING_BOARD", "GRAPH_BOARD", "COMMENT_THREAD", "FORMULA_SHEET", "SIMULATION_SNAPSHOT", "FILE_ATTACHMENT"] },
+    "syncPolicy": { "enum": ["LOCAL_ONLY", "SYNC_PRIVATE", "SHARE_WITH_TEACHER", "SHARE_WITH_CLASS"] },
+    "content": {}
+  },
+  "additionalProperties": false
+}

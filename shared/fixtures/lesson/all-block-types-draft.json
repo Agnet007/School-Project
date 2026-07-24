@@ -1,0 +1,13 @@
+{"lessonId":"10000000-0000-0000-0000-000000000002","draftId":"20000000-0000-0000-0000-000000000002","title":"All blocks","description":"Phase 1 fixture","revision":11,"createdAt":"2026-01-01T00:00:00Z","updatedAt":"2026-01-02T00:00:00Z","blocks":[
+{"blockId":"30000000-0000-0000-0000-000000000001","blockType":"HEADING","blockSchemaVersion":1,"position":0,"configuration":{"text":"Heading","level":2}},
+{"blockId":"30000000-0000-0000-0000-000000000002","blockType":"RICH_TEXT","blockSchemaVersion":1,"position":1,"configuration":{"content":[{"kind":"paragraph","spans":[{"text":"Safe text","bold":true,"italic":false,"inlineCode":false}],"items":[]}]}} ,
+{"blockId":"30000000-0000-0000-0000-000000000003","blockType":"RULE","blockSchemaVersion":1,"position":2,"configuration":{}},
+{"blockId":"30000000-0000-0000-0000-000000000004","blockType":"IMAGE","blockSchemaVersion":1,"position":3,"configuration":{"url":"https://example.com/image.png","alt":"Example","caption":"Caption"}},
+{"blockId":"30000000-0000-0000-0000-000000000005","blockType":"FORMULA","blockSchemaVersion":1,"position":4,"configuration":{"expression":"x=1","displayMode":true}},
+{"blockId":"30000000-0000-0000-0000-000000000006","blockType":"CHART","blockSchemaVersion":1,"position":5,"configuration":{"chartType":"line","title":"Chart","xAxisLabel":"x","yAxisLabel":"y","datasets":[{"label":"A","color":"#123456","points":[{"x":0,"y":1}]}],"tooltip":true}},
+{"blockId":"30000000-0000-0000-0000-000000000007","blockType":"MULTIPLE_CHOICE","blockSchemaVersion":1,"position":6,"configuration":{"prompt":"Choose","options":["A","B"],"allowMultiple":false}},
+{"blockId":"30000000-0000-0000-0000-000000000008","blockType":"NUMERIC_ANSWER","blockSchemaVersion":1,"position":7,"configuration":{"prompt":"Number","placeholder":"0"}},
+{"blockId":"30000000-0000-0000-0000-000000000009","blockType":"TEXT_ANSWER","blockSchemaVersion":1,"position":8,"configuration":{"prompt":"Text","multiline":true}},
+{"blockId":"30000000-0000-0000-0000-000000000010","blockType":"SIMULATION","blockSchemaVersion":1,"position":9,"configuration":{"pluginId":"built-in.deferred","message":"Deferred"}},
+{"blockId":"30000000-0000-0000-0000-000000000011","blockType":"WORKSPACE_LAUNCHER","blockSchemaVersion":1,"position":10,"configuration":{"label":"Open note","documentType":"NOTE"}}
+]}

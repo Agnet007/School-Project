@@ -1,0 +1,254 @@
+openapi: 3.1.0
+info:
+  title: School Platform API
+  version: 0.1.0
+  description: Versioned synchronization and authority API for the offline-first platform.
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: /api/v1
+paths:
+  /health:
+    get:
+      summary: Get service health
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+        '429':
+          description: Request rate exceeded.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /lessons:
+    get:
+      summary: List lesson drafts
+      operationId: listLessonDrafts
+      tags: [Lessons]
+      responses:
+        '200':
+          description: Drafts visible to the principal.
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '../schemas/lesson/lesson-draft-v1.schema.json' } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+    post:
+      summary: Create a lesson draft
+      operationId: createLessonDraft
+      tags: [Lessons]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LessonMetadataInput' }
+      responses:
+        '201':
+          description: Draft created.
+          headers: { ETag: { $ref: '#/components/headers/RevisionETag' } }
+          content: { application/json: { schema: { $ref: '../schemas/lesson/lesson-draft-v1.schema.json' } } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/draft:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }]
+    get:
+      summary: Get a lesson draft
+      operationId: getLessonDraft
+      tags: [Lessons]
+      responses:
+        '200':
+          description: Editable draft.
+          headers: { ETag: { $ref: '#/components/headers/RevisionETag' } }
+          content: { application/json: { schema: { $ref: '../schemas/lesson/lesson-draft-v1.schema.json' } } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+    patch:
+      summary: Update lesson draft metadata
+      operationId: updateLessonMetadata
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/LessonMetadataInput' } } }
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/draft/blocks:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }]
+    post:
+      summary: Add a lesson block
+      operationId: addLessonBlock
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/BlockMutation' } } }
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/draft/blocks/{blockId}:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }, { $ref: '#/components/parameters/BlockId' }]
+    put:
+      summary: Update a lesson block
+      operationId: updateLessonBlock
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/BlockMutation' } } }
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+    delete:
+      summary: Remove a lesson block
+      operationId: removeLessonBlock
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/draft/blocks/{blockId}/duplicate:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }, { $ref: '#/components/parameters/BlockId' }]
+    post:
+      summary: Duplicate a lesson block
+      operationId: duplicateLessonBlock
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/draft/block-order:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }]
+    put:
+      summary: Reorder lesson blocks
+      operationId: reorderLessonBlocks
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/BlockOrderInput' } } }
+      responses:
+        '200': { $ref: '#/components/responses/Draft' }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/publications:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }]
+    post:
+      summary: Publish an immutable lesson version
+      operationId: publishLesson
+      tags: [Lessons]
+      parameters: [{ $ref: '#/components/parameters/IfMatch' }]
+      responses:
+        '201':
+          description: Immutable version created.
+          content: { application/json: { schema: { $ref: '../schemas/lesson/lesson-version-v1.schema.json' } } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/versions:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }]
+    get:
+      summary: List published lesson versions
+      operationId: listPublishedLessonVersions
+      tags: [Lessons]
+      responses:
+        '200':
+          description: Immutable versions in ascending order.
+          content: { application/json: { schema: { type: array, items: { $ref: '../schemas/lesson/lesson-version-v1.schema.json' } } } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+  /lessons/{lessonId}/versions/{version}:
+    parameters: [{ $ref: '#/components/parameters/LessonId' }, { $ref: '#/components/parameters/Version' }]
+    get:
+      summary: Get a published lesson version
+      operationId: getPublishedLessonVersion
+      tags: [Lessons]
+      responses:
+        '200':
+          description: Immutable published snapshot.
+          content: { application/json: { schema: { $ref: '../schemas/lesson/lesson-version-v1.schema.json' } } }
+        '4XX': { $ref: '#/components/responses/Problem' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    LessonId:
+      name: lessonId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    BlockId:
+      name: blockId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    Version:
+      name: version
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
+    IfMatch:
+      name: If-Match
+      in: header
+      required: true
+      description: Quoted or unquoted numeric draft revision.
+      schema: { type: string, pattern: '^"?[0-9]+"?$' }
+  headers:
+    RevisionETag:
+      description: Quoted numeric draft revision.
+      schema: { type: string, pattern: '^"[0-9]+"$' }
+  responses:
+    Draft:
+      description: Updated lesson draft.
+      headers: { ETag: { $ref: '#/components/headers/RevisionETag' } }
+      content: { application/json: { schema: { $ref: '../schemas/lesson/lesson-draft-v1.schema.json' } } }
+    Problem:
+      description: Request failed.
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }
+  schemas:
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [UP]
+    Problem:
+      type: object
+      required: [type, title, status, code, correlationId]
+      properties:
+        type: { type: string, format: uri-reference }
+        title: { type: string }
+        status: { type: integer, minimum: 400, maximum: 599 }
+        detail: { type: string }
+        code: { type: string }
+        correlationId: { type: string }
+        currentRevision: { type: integer, minimum: 0 }
+    LessonMetadataInput:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        description: { type: string, maxLength: 4000, default: '' }
+      additionalProperties: false
+    BlockMutation:
+      type: object
+      required: [blockType, configuration]
+      properties:
+        blockType:
+          enum: [HEADING, RICH_TEXT, RULE, IMAGE, FORMULA, CHART, MULTIPLE_CHOICE, NUMERIC_ANSWER, TEXT_ANSWER, SIMULATION, WORKSPACE_LAUNCHER]
+        configuration:
+          type: object
+          description: Must satisfy the matching configuration in block-v1.schema.json; unknown fields are rejected.
+      additionalProperties: false
+    BlockOrderInput:
+      type: object
+      required: [blockIds]
+      properties:
+        blockIds: { type: array, maxItems: 500, uniqueItems: true, items: { type: string, format: uuid } }
+      additionalProperties: false
+security:
+  - bearerAuth: []

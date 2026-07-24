@@ -1,0 +1,1 @@
+{"type":"https://school.example/problems/lesson-revision-conflict","title":"Conflict","status":409,"detail":"Draft revision is stale","code":"LESSON_REVISION_CONFLICT","correlationId":"correlation-1","currentRevision":7}

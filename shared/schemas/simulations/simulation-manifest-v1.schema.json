@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://school.example/schemas/simulations/simulation-manifest-v1.schema.json",
+  "title": "Simulation manifest v1",
+  "type": "object",
+  "required": ["pluginId", "pluginVersion", "requiredEngineVersion", "displayName", "configSchemaVersion", "stateSchemaVersion", "capabilities", "requestedHostPermissions"],
+  "properties": {
+    "pluginId": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" },
+    "pluginVersion": { "type": "string" },
+    "requiredEngineVersion": { "type": "string" },
+    "displayName": { "type": "string", "minLength": 1 },
+    "configSchemaVersion": { "type": "integer", "minimum": 1 },
+    "stateSchemaVersion": { "type": "integer", "minimum": 1 },
+    "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "requestedHostPermissions": { "type": "array", "items": { "enum": ["requestRender", "emitEvent", "saveSnapshot", "loadAsset", "deterministicRandom"] }, "uniqueItems": true }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://school.example/schemas/events/domain-event-v1.schema.json",
+  "title": "Domain event envelope v1",
+  "type": "object",
+  "required": ["eventId", "eventType", "schemaVersion", "occurredAt", "aggregateId", "payload"],
+  "properties": {
+    "eventId": { "type": "string", "format": "uuid" },
+    "eventType": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "aggregateId": { "type": "string", "format": "uuid" },
+    "payload": { "type": "object" }
+  },
+  "additionalProperties": false
+}

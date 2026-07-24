@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://school.example/schemas/lesson/lesson-draft-v1.schema.json",
+  "title": "Lesson draft API document v1",
+  "type": "object",
+  "required": ["lessonId", "draftId", "title", "description", "revision", "blocks", "createdAt", "updatedAt"],
+  "properties": {
+    "lessonId": { "type": "string", "format": "uuid" },
+    "draftId": { "type": "string", "format": "uuid" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "description": { "type": "string", "maxLength": 4000 },
+    "revision": { "type": "integer", "minimum": 0 },
+    "blocks": { "type": "array", "maxItems": 500, "items": { "$ref": "../blocks/block-v1.schema.json" } },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

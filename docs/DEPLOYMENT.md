@@ -1,0 +1,3 @@
+# Deployment
+
+GitHub Pages hosts the HTTPS frontend using `VITE_BASE_PATH` and a public `VITE_API_BASE_URL`. The backend runs separately on a Java 21 host with PostgreSQL, environment-injected credentials, `/actuator/health`, Flyway on startup, TLS termination, and scheduled verified backups. Object storage is deferred until assets require it. Restore drills and database point-in-time recovery are production prerequisites.
