@@ -16,7 +16,11 @@ npm run verify:pages
 cd backend && mvn verify
 ```
 
-Pages deployment is configured in `.github/workflows/pages.yml`. Repository Settings -> Pages -> Build and deployment -> Source must be set to **GitHub Actions**.
+Pages deployment is configured in `.github/workflows/pages.yml`. Repository Settings -> Pages -> Build and deployment -> Source must be set to **GitHub Actions**. 
+
+```
+
+```
 
 Backend development requires Java 21, Maven 3.9+, and PostgreSQL. Configuration uses `DATABASE_URL`, `DATABASE_USER`, and `DATABASE_PASSWORD`. No production secret belongs in frontend environment variables.
 
